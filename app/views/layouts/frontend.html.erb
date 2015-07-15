@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="luggagep.com">
+    <title>小信鸽 - 分享你的旅行箱</title> 
+    <link href="http://fonts.useso.com/css?family=Open+Sans:300,400,600,700,800%7CShadows+Into+Light" rel="stylesheet" type="text/css">
+    <%= stylesheet_link_tag 'frontend', media: 'all', 'data-turbolinks-track' => true %>
+  </head>
+  <body>
+    <div class="body">
+      <header id="header">
+        <div class="container">
+          <div class="logo">
+            <%= link_to image_tag('frontend/logo.png', width: 111, height: 54, data: { 'sticky-width' => 82, 'sticky-height' => 40 }), root_path %>
+          </div>
+          <button class="btn btn-responsive-nav btn-primary" data-toggle="collapse" data-target=".nav-main-collapse">
+            <i class="fa fa-bars"></i>
+          </button>
+        </div>
+        <div class="navbar-collapse nav-main-collapse collapse">
+          <div class="container">
+            <nav class="nav-main mega-menu">
+              <ul class="nav nav-pills nav-main" id="mainMenu">
+                <li class="dropdown">
+                  <%= link_to '我要带货', root_path, class: 'dropdown-toggle' %>
+                  <ul class="dropdown-menu">
+                    <li><%= link_to '子链接1' %></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <%= link_to '链接2', root_path, class: 'dropdown-toggle' %>
+                </li>
+                <li class="dropdown">
+                  <%= link_to '链接3', root_path, class: 'dropdown-toggle' %>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </header>
+      <%= yield %>
+      <div role="main" class="main shop">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <hr class="tall">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="featured-boxes">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="featured-box featured-box-primary align-left mt-xlg">
+                      <div class="box-content">
+                        <h4 class="heading-primary text-uppercase mb-md">用户登录</h4>
+                        <form action="/" id="frmSignIn" method="post">
+                          <div class="row">
+                            <div class="form-group">
+                              <div class="col-md-12">
+                                <label>手机号码</label>
+                                <input type="text" value="" class="form-control input-lg">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group">
+                              <div class="col-md-12">
+                                <label>验证码</label>
+                                <div class="row">
+                                  <div class="col-xs-7">
+                                    <input type="text" value="" class="form-control input-lg">
+                                  </div>
+                                  <div class="col-xs-5">
+                                    <button type="button" class="btn btn-success btn-lg btn-block">发送</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12 mt-xlg">
+                              <input type="submit" value="登录" class="btn btn-primary btn-lg btn-block" data-loading-text="Loading...">
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%= javascript_include_tag 'frontend', 'data-turbolinks-track' => true %>
+    <%= content_for :javascript %>
+  </body>
+</html>
