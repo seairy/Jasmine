@@ -2,9 +2,9 @@
 class Wechat::BaseController < ApplicationController
   layout 'wechat'
 
-  before_action :authenticate
-  before_action :set_current_user
-  before_action :complete_information
+  before_action :authenticate, except: %w{verify}
+  before_action :set_current_user, except: %w{verify}
+  before_action :complete_information, except: %w{verify}
 
   def verify
     if params[:signature] and params[:timestamp] and params[:nonce] and Digest::SHA1.hexdigest([params[:timestamp], params[:nonce], Setting.key[:wechat][:token]].sort.join) == params[:signature]
