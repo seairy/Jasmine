@@ -1,6 +1,7 @@
 class CreateUsers < ActiveRecord::Migration
   def change
     create_table :users do |t|
+      t.string :uuid, limit: 36, null: false
       t.string :open_id, limit: 28, null: false
       t.string :phone, limit: 11
       t.string :hashed_password, limit: 32
