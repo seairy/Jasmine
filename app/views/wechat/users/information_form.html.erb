@@ -1,26 +1,19 @@
-<div class="signup-page bg1">
-  <div class="signup-page-overlay"></div>
-  <div class="signup-page-wrapper">
-    <a href="#" class="signup-logo"></a>
-    <p>分享您的旅行箱，结交更多好朋友</p>
-    <%= form_tag wechat_user_complete_path, method: :post do %>
-      <%= text_field_tag :phone, nil, class: 'login-username', placeholder: '手机' %>
-      <%= password_field_tag :password, nil, class: 'login-password', placeholder: '密码' %>
+<div class="information-form-page bg1">
+  <div class="information-form-page-overlay"></div>
+  <div class="information-form-page-wrapper">
+    <a href="#" class="information-form-logo"></a>
+    <p>请您完善以下基本信息</p>
+    <%= form_for @current_user, url: complete_wechat_users_path, method: :post do |f| %>
+      <%= f.text_field :phone, class: 'text-input-one', placeholder: '手机' %>
+      <%= f.text_field :nickname, class: 'text-input-one', placeholder: '昵称' %>
+      <%= f.file_field :portrait, class: 'text-input-one', placeholder: '头像' %>
       <div class="one-half">
-        <%= submit_tag '登录', class: 'button button-green' %>
+        <a href="#" class="button button-blue full-button">发送验证码</a>
       </div>
       <div class="one-half last-column">
-        <a href="#" class="button button-blue">注册</a>
+        <%= submit_tag '登录', class: 'button button-green full-button' %>
       </div>
     <% end %>
-    <input type="text" class="signup-email" value="Email">
-    <input type="text" class="signup-password" value="Password">
-    <div class="one-half">
-      <a href="#" class="button button-green full-button">Signup</a>
-    </div>                
-    <div class="one-half last-column">
-      <a href="pageapp-login.html" class="button button-blue full-button">Login</a>
-    </div>
     <div class="clear"></div>
   </div>
 </div>

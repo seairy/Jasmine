@@ -2,6 +2,7 @@
 class Wechat::BaseController < ApplicationController
   layout 'wechat'
 
+  skip_before_action :verify_authenticity_token
   before_action :authenticate, except: %w{verify}
   before_action :set_current_user, except: %w{verify}
   before_action :complete_information, except: %w{verify}
@@ -17,6 +18,10 @@ class Wechat::BaseController < ApplicationController
     end
   end
 
+  def dashboard
+
+  end
+
   protected
     def authenticate
       redirect_to "https://open.weixin.qq.com/connect/oauth2/authorize?appid=#{Setting.key[:wechat][:appid]}&redirect_uri=http%3A%2F%luggagep.com%2Fwechat%2Fsessions%2Fcreate&response_type=code&scope=snsapi_base&state=authenticate#wechat_redirect" unless session['user']
@@ -27,6 +32,6 @@ class Wechat::BaseController < ApplicationController
     end
 
     def complete_information
-      redirect_to wechat_user_information_form_path if @current_user.unactivated?
+      redirect_to information_form_wechat_users_path if @current_user.unactivated?
     end
 end

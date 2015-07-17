@@ -3,14 +3,14 @@
   <div class="login-page-wrapper">
     <a href="#" class="login-logo"></a>
     <p>分享您的旅行箱，结交更多好朋友</p>
-    <%= form_tag wechat_signin_path, method: :post do %>
-      <%= text_field_tag :phone, nil, class: 'login-username', placeholder: '手机' %>
-      <%= password_field_tag :password, nil, class: 'login-password', placeholder: '密码' %>
+    <%= content_tag(:p, flash[:alert], class: 'alert') if flash[:alert] %>
+    <%= form_tag wechat_force_signin_path, method: :post do %>
+      <%= text_field_tag :open_id, nil, class: 'login-username', placeholder: 'Open ID' %>
       <div class="one-half">
         <%= submit_tag '登录', class: 'button button-green' %>
       </div>
       <div class="one-half last-column">
-        <a href="#" class="button button-blue">注册</a>
+        <%= link_to '生成新用户', wechat_force_signup_path, method: :post, class: 'button button-blue' %>
       </div>
     <% end %>
     <div class="clear"></div>

@@ -19,5 +19,11 @@ class User < ActiveRecord::Base
         user.behaviors.sign_up!
       end
     end
+
+    def faker
+      create!(open_id: "faker_#{SecureRandom.urlsafe_base64}").tap do |user|
+        user.behaviors.sign_up!
+      end
+    end
   end
 end
