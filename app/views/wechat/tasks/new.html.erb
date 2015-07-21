@@ -1,12 +1,27 @@
 <div class="header-clear-extra"></div>
-<div class="content">
+<div class="content new-task-page">
   <div class="container no-bottom">
     <h3>发布需求</h3>
   </div>
   <div class="decoration"></div>
+  <%= form_for [:wechat, @task] do |f| %>
   <div class="container no-bottom">
-    <%= form_for [:wechat, @task] do |f| %>
-    <%= f.text_area :content, class: 'text-area' %>
-    <% end %>
+    <h5><i class="fa fa-info-circle"></i> 描述信息</h5>
+    <%= f.text_area :content, class: 'text-area text-area-sm', placeholder: '请详细描述您需要的货品信息，包括货号、型号、颜色、尺码等' %>
+    <h5><i class="fa fa-camera-retro"></i> 上传照片</h5>
+    <input type="file" accept="image/*" class="file-field" multiple>
+    <h5><i class="fa fa-tags"></i> 填写标签</h5>
+    <div class="one-third">
+      <%= text_field_tag :tag, nil, class: 'text-field text-field-tag' %>
+    </div>
+    <div class="one-third">
+      <%= text_field_tag :tag, nil, class: 'text-field text-field-tag' %>
+    </div>
+    <div class="one-third last-column">
+      <%= text_field_tag :tag, nil, class: 'text-field text-field-tag' %>
+    </div>
+    <h5><i class="fa fa-calculator"></i> 计算价格</h5>
+    <%= f.text_area :content, class: 'text-area text-area-sm' %>
   </div>
+  <% end %>
 </div>

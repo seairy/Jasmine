@@ -12,7 +12,7 @@
         <a href="#" class="button button-green full-button verification-code-button">发送验证码</a>
       </div>
       <%= f.text_field :nickname, maxlength: 25, class: 'text-input-one', placeholder: '昵称（4至16位中英文、数字或下划线）' %>
-      <%= submit_tag '完成', class: 'button button-blue full-button button-submit' %>
+      <%= link_to '完成', '#', class: 'button button-blue full-button complete-information-button' %>
     <% end %>
     <div class="clear"></div>
   </div>
@@ -58,7 +58,7 @@
         }
       });
 
-      $('.button-submit').click(function(e) {
+      $('.complete-information-button').click(function(e) {
         e.preventDefault();
         if($('#user_phone').val() == '' || $('#user_phone').val().length != 11) {
           showValidateMessage('请填写手机号');

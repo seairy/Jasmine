@@ -9,7 +9,6 @@ $(window).load(function() {
 
 $(document).ready(function() {
     
-    
     //Top Menu 
     $('.show-navigation').click(function(){
         $('.menu-top').toggleClass('show-menus');
@@ -534,7 +533,11 @@ $(document).ready(function() {
     afterMove : moved,
     startDragging : pauseOnDragging
   });
-    
+
+  $('.button-submit').click(function(e){
+    e.preventDefault();
+    $('.button-submit').parents('form:first').submit();
+  });
     
 });
 
