@@ -26,5 +26,6 @@ Rails.application.routes.draw do
     post 'signin', to: 'sessions#create'
     post 'force_signup', to: 'users#force_create', as: :force_signup
     get 'signout', to: 'sessions#destroy', as: :signout
+    get 'test', to: 'test#index'
   end
 end
