@@ -1,0 +1,12 @@
+<div class="header-clear-extra"></div>
+<div class="content">
+  <div class="container no-bottom">
+    <h3>发布需求</h3>
+  </div>
+  <div class="decoration"></div>
+  <div class="container no-bottom">
+    <%= form_for [:wechat, @task] do |f| %>
+    <%= f.text_area :content, class: 'text-area' %>
+    <% end %>
+  </div>
+</div>

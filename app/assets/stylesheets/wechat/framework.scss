@@ -3942,7 +3942,7 @@ table tr:hover td{
 }
 
 .switch-3 span{
-    z-index:10;;
+    z-index:10;
     position:absolute;
     background-color:#cacaca;
     width:25px;
@@ -4748,6 +4748,23 @@ table tr:hover td{
     margin:20px 0 10px 0;
 }
 
+.information-form-page-wrapper{
+    .message {
+      margin: 0;
+      padding: 10px 0 16px 0;
+    }
+    .alert {
+      color: red;
+    }
+    .notice {
+      color: green;
+    }
+    .verification-code-button {
+      height: 45px;
+      line-height: 25px;
+    }
+}
+
 .information-form-logo{
     background-image:asset-url('wechat/logo.png');
     width:100px;
@@ -4756,4 +4773,15 @@ table tr:hover td{
     margin-left:auto;
     margin-right:auto;
     margin-bottom:5px;
+}
+
+.text-area{
+  width:100%;
+  background-color:#FFFFFF;
+  border:solid 1px rgba(0,0,0,0.15);
+  height:45px;
+  color:rgba(0,0,0,0.7);
+  padding:4px;
+  margin-bottom:20px;
+  transition:all 200ms ease;
 }

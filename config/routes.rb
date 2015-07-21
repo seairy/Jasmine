@@ -8,13 +8,19 @@ Rails.application.routes.draw do
   end
   namespace :wechat do
     root 'base#verify', via: [:get, :post]
-    get 'dashboard', to: 'base#dashboard', as: :dashboard
+    get 'dashboard', to: 'dashboard#index', as: :dashboard
     resource :users do
       member do
         get :information_form
         post :complete
       end
     end
+    resources :verification_codes do
+      collection do
+        post :send_for_complete_information
+      end
+    end
+    resources :tasks
     get 'force_signin', to: 'sessions#force_new', as: :force_signin
     post 'force_signin', to: 'sessions#force_create'
     post 'signin', to: 'sessions#create'
