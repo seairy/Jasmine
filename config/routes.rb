@@ -20,11 +20,16 @@ Rails.application.routes.draw do
         post :send_for_complete_information
       end
     end
-    resources :tasks
+    resources :tasks do
+      collection do
+        get :published
+      end
+    end
     get 'force_signin', to: 'sessions#force_new', as: :force_signin
     post 'force_signin', to: 'sessions#force_create'
     post 'signin', to: 'sessions#create'
     post 'force_signup', to: 'users#force_create', as: :force_signup
     get 'signout', to: 'sessions#destroy', as: :signout
+    get 'demo', to: 'v2#demo'
   end
 end

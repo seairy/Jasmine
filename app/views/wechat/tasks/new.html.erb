@@ -4,24 +4,74 @@
     <h3>发布需求</h3>
   </div>
   <div class="decoration"></div>
-  <%= form_for [:wechat, @task] do |f| %>
+  <%= form_for [:wechat, @task], html: { multipart: true } do |f| %>
+  <%= f.hidden_field :region_id %>
   <div class="container no-bottom">
+    <% if flash[:alert] %>
+    <p class="message alert"><%= flash[:alert] %></p>
+    <% else %>
+    <p class="message alert invisible"></p>
+    <% end %>
     <h5><i class="fa fa-info-circle"></i> 描述信息</h5>
     <%= f.text_area :content, class: 'text-area text-area-sm', placeholder: '请详细描述您需要的货品信息，包括货号、型号、颜色、尺码等' %>
     <h5><i class="fa fa-camera-retro"></i> 上传照片</h5>
-    <input type="file" accept="image/*" class="file-field" multiple>
-    <h5><i class="fa fa-tags"></i> 填写标签</h5>
-    <div class="one-third">
-      <%= text_field_tag :tag, nil, class: 'text-field text-field-tag' %>
+    <input name="photographs[]" type="file" accept="image/*" class="file-field" multiple>
+    <h5><i class="fa fa-globe"></i> 选择地点</h5>
+    <div class="container-region">
+      <% Region.all.each do |region| %>
+      <%= link_to region.name, 'javascript:return false;', 'region-id' => region.id, class: 'button button-grey button-region' %>
+      <% end %>
+      <%= link_to '其它', 'javascript:return false;', 'region-id' => 0, class: 'button button-grey button-region' %>
     </div>
-    <div class="one-third">
-      <%= text_field_tag :tag, nil, class: 'text-field text-field-tag' %>
+    <h5><i class="fa fa-calculator"></i> 预估价格（元）</h5>
+    <%= f.text_field :estimate_price, class: 'text-field text-field-estimate-price', placeholder: '最高可接受价格' %>
+    <div>
+      <%= link_to '填写完成，发布需求', '#', class: 'button button-blue full-button new-task-button' %>
     </div>
-    <div class="one-third last-column">
-      <%= text_field_tag :tag, nil, class: 'text-field text-field-tag' %>
-    </div>
-    <h5><i class="fa fa-calculator"></i> 计算价格</h5>
-    <%= f.text_area :content, class: 'text-area text-area-sm' %>
   </div>
   <% end %>
 </div>
+<% content_for :javascript do %>
+  <script>
+  (function ($) {
+    $(document).ready(function() {
+      $('.button-region').click(function(e){
+        e.preventDefault();
+        $('.button-region').removeClass('button-red');
+        $('.button-region').addClass('button-grey');
+        $(this).removeClass('button-grey');
+        $(this).addClass('button-red');
+        $('#task_region_id').val($(this).attr('region-id'));
+      });
+
+      $('.new-task-button').click(function(e){
+        e.preventDefault();
+        if($('#task_content').val() == '' || $('#task_content').val().length < 10) {
+          showValidateMessage('描述信息不能少于10个字');
+        } else if($('#task_content').val().length > 2000) {
+          showValidateMessage('描述信息不能大于2000个字');
+        } else if($('#task_region_id').val() == '') {
+          showValidateMessage('请选择地区');
+        } else if($('#task_estimate_price').val() == '') {
+          showValidateMessage('请填写预估价格');
+        } else if(!(new RegExp(/^\d{3,6}$/).test($('#task_estimate_price').val()))) {
+          showValidateMessage('预估价格不能小于100元、大于10万元');
+        } else if(parseInt($('#task_estimate_price').val()) < 100 || parseInt($('#task_estimate_price').val()) > 100000) {
+          showValidateMessage('预估价格不能小于100元、大于10万元');
+        } else {
+          $('.new-task-button').hide();
+          $('.new-task-button').parent().prepend('<a href="javascript:return false;" class="button button-blue full-button">提交中...</a>');
+          $('.new-task-button').parents('form:first').submit();
+        }
+      });
+
+      function showValidateMessage(message) {
+        $('.message').removeClass('invisible');
+        $('.message').html(message);
+        $('.message').effect('shake', {}, 500);
+        $('body').animate({ scrollTop: 0 }, 100);
+      }
+    });
+  }(jQuery));
+  </script>
+<% end %>

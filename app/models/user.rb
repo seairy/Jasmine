@@ -2,6 +2,9 @@ class User < ActiveRecord::Base
   include UUID, AASM
   has_many :behaviors
   has_many :verification_codes
+  has_many :demanded_tasks, foreign_key: 'demander_id', class_name: 'Task'
+  has_many :supplied_tasks, foreign_key: 'supplier_id', class_name: 'Task'
+  mount_uploader :portrait, UserPortraitUploader
   aasm column: 'state' do
     state :unactivated, initial: true
     state :activated

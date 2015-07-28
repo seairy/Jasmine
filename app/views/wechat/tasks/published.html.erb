@@ -1,0 +1,42 @@
+<div class="header-clear-extra"></div>
+<div class="content task-list-page">
+  <div class="container no-bottom">
+    <% @tasks.each do |task| %>
+    <a href="<%= url_for([:wechat, task]) %>" class="task-item">
+      <div class="user">
+        <div class="portrait"><%= image_tag task.demander.portrait.w100_h100_fl_q60.url %></div>
+        <div class="nickname"><%= task.demander.nickname %></div>
+      </div>
+      <div class="estimate-price"><%= task.estimate_price.to_i %>元</div>
+      <div class="clear"></div>
+      <div class="published-at"><%= time_ago_in_words task.created_at %>前发布</div>
+      <div class="region">
+        <% if task.region %>
+        <%= task.region.name %>购买
+        <% else %>
+        无地点限制
+        <% end %>
+      </div>
+      <div class="clear"></div>
+      <div class="content"><%= task.content.truncate(115) %></div>
+      <% if task.photographs.any? %>
+      <div class="photographs">
+        <% task.photographs.limit(3).each do |photograph| %>
+        <%= image_tag photograph.file.w80_h80_fl_q60.url %>
+        <% end %>
+      </div>
+      <% end %>
+    </a>
+    <% end %>
+    <div class="one-half">
+      <%= link_to_previous_page @tasks, '上一页', class: 'button button-green full-button' do %>
+      <a class="button button-grey full-button">上一页</a>
+      <% end %>
+    </div>
+    <div class="one-half last-column ">
+      <%= link_to_next_page @tasks, '下一页', class: 'button button-green full-button' do %>
+      <a class="button button-grey full-button">下一页</a>
+      <% end %>
+    </div>
+  </div>
+</div>

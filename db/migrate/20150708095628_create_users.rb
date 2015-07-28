@@ -6,6 +6,8 @@ class CreateUsers < ActiveRecord::Migration
       t.string :phone, limit: 11
       t.string :nickname, limit: 50
       t.string :portrait, limit: 40
+      t.integer :gender, limit: 1
+      t.decimal :balance, precision: 9, scale: 2, default: 0, null: false
       t.string :state, limit: 20, null: false
       t.timestamps null: false
     end

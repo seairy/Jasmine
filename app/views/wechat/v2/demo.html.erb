@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DEMO</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta http-equiv="X-UA-Compatible" content="edge" />
+    <%#= stylesheet_link_tag 'wechat', media: 'all' %>
+  </head>
+  <body>
+    <div class="header">
+      <img id="header-pic" src="/image/blank-7b0549d51f.png" data-original="/image/coach-list-header-51e04f25b2.jpg">
+    </div>
+    <div class="content">
+      <ul id="coach-list" class="coach-list"></ul>
+      <div id="loading" class="loading-tip"><i class="loading-ico"></i>加载中…</div>
+    </div>
+    <div class="footer">
+      <ul class="clearfix">
+        <li><a href="sport_list" class="index-tab"><p class="icon--01"></p>首页</a></li>
+        <li><a href="coach_list" class="coach-tab active"><p class="icon--02"></p>教练</a></li>
+        <li><a href="order_list" class="order-tab"><p class="icon--03"></p>订单</a></li>
+        <li><a href="personal" class="my-tab"><p class="icon--04"></p>我的</a></li>
+      </ul>
+    </div>
+    <%= javascript_include_tag 'wechat_v2' %>
+  </body>
+</html>

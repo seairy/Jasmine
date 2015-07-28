@@ -1,0 +1,31 @@
+<div class="header-clear-extra"></div>
+<div class="content task-show-page">
+  <div class="container no-bottom">
+    <div class="task-item">
+      <div class="user">
+        <div class="portrait"><%= image_tag @task.demander.portrait.w100_h100_fl_q60.url %></div>
+        <div class="nickname"><%= @task.demander.nickname %></div>
+      </div>
+      <div class="estimate-price"><%= @task.estimate_price.to_i %>元</div>
+      <div class="clear"></div>
+      <div class="published-at"><%= time_ago_in_words @task.created_at %>前发布</div>
+      <div class="region">
+        <% if @task.region %>
+        <%= @task.region.name %>购买
+        <% else %>
+        无地点限制
+        <% end %>
+      </div>
+      <div class="clear"></div>
+      <a href="" class="button button-blue full-button accept-button">我可以帮TA带</a>
+      <div class="content"><%= @task.content %></div>
+      <% if @task.photographs.any? %>
+      <div class="photographs">
+        <% @task.photographs.each do |photograph| %>
+        <%= image_tag photograph.file.w800_h800_ft_q80.url %>
+        <% end %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
