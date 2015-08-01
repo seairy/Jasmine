@@ -5,7 +5,7 @@ class Wechat::BaseController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :authenticate, except: %w{verify}
   before_action :set_current_user, except: %w{verify}
-  before_action :complete_information, except: %w{verify}
+  before_action :sign_up, except: %w{verify}
 
   def verify
     if params[:signature] and params[:timestamp] and params[:nonce] and Digest::SHA1.hexdigest([params[:timestamp], params[:nonce], Setting.key[:wechat][:token]].sort.join) == params[:signature]
@@ -31,7 +31,7 @@ class Wechat::BaseController < ApplicationController
       @current_user = User.find(session['user']['id'])
     end
 
-    def complete_information
-      redirect_to information_form_wechat_users_path if @current_user.unactivated?
+    def sign_up
+      redirect_to wechat_sign_up_form_path if @current_user.unactivated?
     end
 end

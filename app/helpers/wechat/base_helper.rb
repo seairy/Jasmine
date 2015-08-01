@@ -1,23 +1,19 @@
 # -*- encoding : utf-8 -*-
 module Wechat::BaseHelper
-  def flash_tag
-    content_tag(:p, flash[:alert], class: 'alert') if flash[:alert]
+  def header_tag
+    raw "<header class=\"header\">
+      #{image_tag 'wechat/blank.png', data: { original: 'header.jpg' }}
+    </header>"
   end
 
-  def menu_tag
-    raw "<ul class=\"menu-top\">
-      <li><a href=\"#{url_for(new_wechat_task_path)}\"><i class=\"fa fa-suitcase\"></i>发布需求<i class=\"fa fa-circle\"></i></a></li>
-      <li><a href=\"#{url_for(published_wechat_tasks_path)}\"><i class=\"fa fa-list\"></i>需求列表<i class=\"fa fa-circle\"></i></a></li>
-      <li>
-        <a class=\"has-submenu\" href=\"#\"><i class=\"fa fa-user\"></i>我的<i class=\"fa fa-plus active-plus\"></i></a>
-        <ul class=\"submenu show-submenu\">
-          <li class=\"active-menu\"><a href=\"pageapp-login.html\"><i class=\"fa fa-angle-right\"></i>个人信息<i class=\"fa fa-circle\"></i></a></li>
-          <li><a href=\"pageapp-singup.html\"><i class=\"fa fa-angle-right\"></i>Signup<i class=\"fa fa-circle\"></i></a></li>
-          <li><a href=\"pageapp-coverpage.html\"><i class=\"fa fa-angle-right\"></i>Coverpage<i class=\"fa fa-circle\"></i></a></li>
-        </ul>
-      </li>
-      <li><a href=\"contact.html\"><i class=\"fa fa-envelope-o\"></i>Contact<i class=\"fa fa-circle\"></i></a></li>
-      <li><a class=\"close-menu\" href=\"#\"><i class=\"fa fa-times\"></i>Close<i class=\"fa fa-circle\"></i></a></li>
-    </ul>"
+  def footer_tag
+    raw "<footer class=\"footer\">
+      <ul class=\"clearfix\">
+        <li class=\"tab-1\"><i class=\"fa fa-suitcase\"></i>#{link_to '想要', new_wechat_task_path }</li>
+        <li class=\"tab-2\"><i class=\"fa fa-plane\"></i>#{link_to '信鸽', wechat_tasks_path }</li>
+        <li class=\"tab-3\"><i class=\"fa fa-compass\"></i>#{link_to '发现', new_wechat_task_path }</li>
+        <li class=\"tab-4\"><i class=\"fa fa-user\"></i>#{link_to '个人', wechat_dashboard_path }</li>
+      </ul>
+    </footer>"
   end
 end

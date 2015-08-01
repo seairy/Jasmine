@@ -1,9 +1,11 @@
-<div class="header-clear-extra"></div>
 <div class="content">
-  <div class="container no-bottom">
-    <h3>需求发布成功！</h3>
+  <div class="panel panel-notice">
+    <h1>发布成功</h1>
+    <p>请您尽快支付定金 <span class="text-danger"><%= @task.deposit %>元</span>，也可进入 "我的" -&gt; "我发布的订单" 中找到该订单，并进行支付操作。</p>
+    <div class="payment">
+      <%= link_to image_tag('wechat/wechat-pay.jpg') %>
+      <%= link_to image_tag('wechat/ali-pay.jpg') %>
+    </div>
   </div>
-  <div class="decoration"></div>
-  <%= @task.estimate_price %>
-  <p>请选择付款方式：</p>
 </div>
+<%= footer_tag %>

@@ -1,31 +1,53 @@
-<div class="header-clear-extra"></div>
-<div class="content task-show-page">
-  <div class="container no-bottom">
-    <div class="task-item">
-      <div class="user">
-        <div class="portrait"><%= image_tag @task.demander.portrait.w100_h100_fl_q60.url %></div>
-        <div class="nickname"><%= @task.demander.nickname %></div>
-      </div>
-      <div class="estimate-price"><%= @task.estimate_price.to_i %>元</div>
-      <div class="clear"></div>
-      <div class="published-at"><%= time_ago_in_words @task.created_at %>前发布</div>
-      <div class="region">
-        <% if @task.region %>
-        <%= @task.region.name %>购买
-        <% else %>
-        无地点限制
-        <% end %>
-      </div>
-      <div class="clear"></div>
-      <a href="" class="button button-blue full-button accept-button">我可以帮TA带</a>
-      <div class="content"><%= @task.content %></div>
-      <% if @task.photographs.any? %>
-      <div class="photographs">
-        <% @task.photographs.each do |photograph| %>
-        <%= image_tag photograph.file.w800_h800_ft_q80.url %>
-        <% end %>
-      </div>
+<div class="content">
+  <div class="panel panel-task-show">
+    <div class="user">
+      <div class="portrait"><%= image_tag @task.demander.portrait.w100_h100_fl_q60.url %></div>
+      <div class="nickname"><%= @task.demander.nickname %></div>
+    </div>
+    <div class="estimate-price"><%= @task.estimate_price.to_i %>元</div>
+    <div class="clearfix"></div>
+    <div class="published-at"><%= time_ago_in_words @task.created_at %>前发布</div>
+    <div class="region">
+      <% if @task.region %>
+      <%= @task.region.name %>购买
+      <% else %>
+      无地点限制
       <% end %>
     </div>
+    <div class="clearfix"></div>
+    <% if @task.publishing? %>
+    <%= link_to '我可以帮TA带', accept_wechat_task_path(@task), class: 'btn btn-primary', id: 'accept-btn' %>
+    <% else %>
+    <%= link_to '该需求已被接单', 'javascript:;', class: 'btn btn-muted' %>
+    <% end %>
+    <div class="task-content"><%= @task.content %></div>
+    <% if @task.photographs.any? %>
+    <div class="photographs clearfix">
+      <% @task.photographs.each do |photograph| %>
+      <%= image_tag photograph.file.w800_h800_ft_q80.url %>
+      <% end %>
+    </div>
+    <% end %>
   </div>
 </div>
+<%= footer_tag %>
+<% content_for :javascript do %>
+  <script>
+    $(document).ready(function() {
+      $('#accept-btn').on('click', function(e) {
+        e.preventDefault();
+        $.ajax({
+          url: this.href,
+          method: 'PUT',
+          success: function(data) {
+            if(data.result == 'success') {
+              window.location.href = '/wechat/tasks/<%= @task.id %>/accept_successful';
+            } else {
+              toastr.error(data.message);
+            }
+          }
+        });
+      });
+    });
+  </script>
+<% end %>

@@ -1,12 +1,12 @@
 # -*- encoding : utf-8 -*-
 class Wechat::VerificationCodesController < Wechat::BaseController
-  skip_before_action :complete_information
+  skip_before_action :sign_up
 
-  def send_for_complete_information
+  def send_for_sign_up
     begin
       raise InvalidPhone.new unless !!(params[:phone] =~ /^1\d{10}$/)
-      VerificationCode.send_complete_information(user: @current_user, phone: params[:phone])
-      render json: AjaxMessenger.new('验证码发送成功，请注意查收。')
+      VerificationCode.send_sign_up(user: @current_user, phone: params[:phone])
+      render json: AjaxMessenger.new
     rescue InvalidPhone
       render json: AjaxMessenger.new('无效的手机号', false)
     rescue InvalidState

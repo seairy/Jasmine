@@ -1,36 +1,19 @@
-<!DOCTYPE HTML>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0 minimal-ui"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <title>小信鸽 - 分享你的旅行箱</title>
-  <%= stylesheet_link_tag 'wechat', media: 'all' %>
-  <%= javascript_include_tag 'wechat' %>
-</head>
-<body>
-  <div id="preloader">
-    <div id="status">
-      <p class="center-text">正在加载内容...<em>加载时间取决于您的网络连接速度</em></p>
-    </div>
-  </div>
-  <%= menu_tag if @current_user.try(:activated?) %>
-  <div class="header">
-    <%= link_to '', wechat_dashboard_path, class: 'header-logo' %>
-    <%= link_to raw('<i class="fa fa-navicon"></i>'), '#', class: 'header-navigation show-navigation' if @current_user.try(:activated?) %>
-  </div>
-  <div class="header-clear"></div>
-  <%= yield %>
-  <div class="footer disabled">
-    <div class="footer-socials half-bottom">
-      <a href="#" class="footer-facebook"><i class="fa fa-facebook"></i></a>
-      <a href="#" class="footer-twitter"><i class="fa fa-twitter"></i></a>
-      <a href="#" class="footer-google"><i class="fa fa-google-plus"></i></a>
-      <a href="#" class="footer-share show-share-bottom"><i class="fa fa-share-alt"></i></a>
-      <a href="#" class="footer-up"><i class="fa fa-angle-up"></i></a>
-    </div>
-    <p class="center-text">Copyright 2015. All rights reserved.</p>
-  </div>
-  <div class="menu-wrapper-background"></div>
-  <%= content_for :javascript %>
-</body>
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- <title>小信鸽 - 分享你的旅行箱</title> -->
+    <title>DEMO</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta http-equiv="X-UA-Compatible" content="edge" />
+    <%= stylesheet_link_tag 'wechat', media: 'all' %>
+  </head>
+  <body>
+    <%= yield %>
+    <%= javascript_include_tag 'wechat' %>
+    <%= content_for :javascript %>
+  </body>
+</html>

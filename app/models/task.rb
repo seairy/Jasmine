@@ -4,6 +4,7 @@ class Task < ActiveRecord::Base
   belongs_to :supplier, class_name: 'User'
   belongs_to :region
   has_many :photographs, class_name: 'TaskPhotograph'
+  has_many :operations, class_name: 'TaskOperation'
   before_create :set_default_values
   aasm column: 'state' do
     state :pending, initial: true
@@ -35,6 +36,15 @@ class Task < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       self.deposit_paid = true
       self.publish!
+    end
+  end
+
+  def accept_by user
+    raise InvalidState.new unless self.publishing?
+    raise InvalidSupplier.new if user.id == self.demander_id
+    self.with_lock do
+      self.update!(supplier: user)
+      self.accept!
     end
   end
 

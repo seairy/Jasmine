@@ -1,1 +1,16 @@
-Welcome!
+<div class="content">
+  <div class="dashboard">
+    <a href="#" class="profile clearfix">
+      <div class="portrait"><%= image_tag(@current_user.portrait.w500_h500_fl_q80.url || 'wechat/non-portrait.jpg') %></div>
+      <div class="nickname"><%= @current_user.nickname %></div>
+      <div class="signed-up-at"><%= @current_user.signed_up_at.strftime('%Y-%m-%d') %> 加入</div>
+    </a>
+    <ul class="menu">
+      <li><%= link_to '我发布的订单' %><i class="fa fa-angle-right"></i></li>
+      <li><%= link_to '我承接的订单' %><i class="fa fa-angle-right"></i></li>
+      <li><%= link_to '关于我们' %><i class="fa fa-angle-right"></i></li>
+      <li><%= link_to '用户协议' %><i class="fa fa-angle-right"></i></li>
+    </ul>
+  </div>
+</div>
+<%= footer_tag %>

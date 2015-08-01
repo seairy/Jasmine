@@ -14,39 +14,42 @@ class User < ActiveRecord::Base
     end
   end
 
-  def complete_information options = {}
+  def sign_up options = {}
     ActiveRecord::Base.transaction do
       raise InvalidState.new unless self.unactivated?
-      raise DuplicatedPhone.new if User.duplicated_phone?(options[:phone])
-      raise DuplicatedNickname.new if User.duplicated_nickname?(options[:nickname])
-      VerificationCode.validate_complete_information(user: self, phone: options[:phone], verification_code: options[:verification_code])
+      raise DuplicatedPhone.new if User.phone_exist?(options[:phone])
+      raise DuplicatedNickname.new if User.nickname_exist?(options[:nickname])
+      VerificationCode.validate_sign_up(user: self, phone: options[:phone], verification_code: options[:verification_code])
       update!(phone: options[:phone], nickname: options[:nickname])
       self.active!
-      self.behaviors.complete_information!
+      self.behaviors.sign_up!
     end
+  end
+
+  def signed_up_at
+    self.behaviors.sign_ups.first.try(:created_at)
   end
 
   class << self
     def find_or_create open_id
-      if user = where(open_id: open_id).first
-        user.behaviors.sign_in!
-      else
-        user = create!(open_id: open_id)
-        user.behaviors.sign_up!
+      where(open_id: open_id).first.tap do |user|
+        user.try(:behaviors).try(:sign_in!)
+      end || create!(open_id: open_id).tap do |user|
+        user.behaviors.touch!
       end
     end
 
     def faker
       create!(open_id: "faker_#{SecureRandom.urlsafe_base64}").tap do |user|
-        user.behaviors.sign_up!
+        user.behaviors.touch!
       end
     end
 
-    def duplicated_phone? phone
+    def phone_exist? phone
       where(phone: phone).first
     end
 
-    def duplicated_nickname? nickname
+    def nickname_exist? nickname
       where(nickname: nickname).first
     end
   end

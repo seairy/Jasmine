@@ -3,7 +3,6 @@
   <div class="login-page-wrapper">
     <a href="#" class="login-logo"></a>
     <p>分享您的旅行箱，结交更多好朋友</p>
-    <%= flash_tag %>
     <%= form_tag wechat_force_signin_path, method: :post do %>
       <%= text_field_tag :open_id, nil, class: 'login-username', placeholder: 'Open ID' %>
       <div class="one-half">

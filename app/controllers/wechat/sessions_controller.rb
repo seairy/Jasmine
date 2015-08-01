@@ -2,7 +2,7 @@
 class Wechat::SessionsController < Wechat::BaseController
   skip_before_action :authenticate
   skip_before_action :set_current_user
-  skip_before_action :complete_information
+  skip_before_action :sign_up
 
   def force_new
   end

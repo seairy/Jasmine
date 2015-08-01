@@ -14,7 +14,7 @@ namespace :data do
         user = User.faker
         user.update!(phone: "1#{Faker::PhoneNumber.subscriber_number(10)}", nickname: Faker::Name.name, portrait: fake_image_file, created_at: Time.now - rand(2..365).days)
         user.active!
-        user.behaviors.complete_information!
+        user.behaviors.sign_up!
         rand(2..4).times do
           task = user.demanded_tasks.create!(content: Faker::Lorem.paragraph(rand(2..8)), region_id: Region.all.sample.id, estimate_price: rand(200..26000), created_at: Time.now - rand(60..86400).seconds)
           rand(0..4).times do

@@ -1,6 +1,5 @@
-//= require wechat/style
 //= require wechat/framework
-//= require wechat/owl.theme
-//= require wechat/swipebox
 //= require wechat/font-awesome
-//= require wechat/animate
+//= require wechat/toastr
+//= require wechat/custombox
+//= require wechat/style
