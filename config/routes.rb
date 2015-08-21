@@ -16,11 +16,44 @@ Rails.application.routes.draw do
       end
     end
     resources :tasks do
+      collection do
+        get :published
+        get :demanded
+        get :supplied
+      end
       member do
+        put :pay_deposit
+        get :acceptable
+        get :accept_confirmation
         put :accept
         get :accept_successful
+        get :trashable
+        get :trash_confirmation
+        put :trash
+        get :trash_successful
+        get :cancelable
+        get :cancel_confirmation
+        put :cancel
+        get :cancel_successful
+        get :purchasable
+        get :purchase_confirmation
+        put :purchase
+        get :purchase_successful
+        get :clearable
+        get :clear_confirmation
+        put :clear
+        get :clear_successful
       end
     end
+    resources :consignees
+    resource :instruction do
+      collection do
+        get :publish_task
+        get :accept_task
+      end
+    end
+    resource :account
+    get 'error', to: 'base#error', as: :error
     get 'force_signin', to: 'sessions#force_new', as: :force_signin
     post 'force_signin', to: 'sessions#force_create'
     post 'force_signup', to: 'users#force_create', as: :force_signup

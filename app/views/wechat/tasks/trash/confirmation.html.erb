@@ -1,0 +1,30 @@
+<div class="content">
+  <div class="panel panel-notice">
+    <h1>确认删除</h1>
+    <p>1. 删除订单后，你支付的定金将会退回到您的账户余额中</p>
+    <p>2. 需求的平均接单时间为24小时，可以再耐心等待一下下噢</p>
+    <%= link_to '返回', [:wechat, @task], class: 'btn btn-success' %>
+    <%= link_to '确认删除', trash_wechat_task_path(@task), class: 'btn btn-danger', id: 'trash-btn' %>
+  </div>
+</div>
+<%= footer_tag %>
+<% content_for :javascript do %>
+  <script>
+    $(document).ready(function() {
+      $('#trash-btn').on('click', function(e) {
+        e.preventDefault();
+        $.ajax({
+          url: this.href,
+          method: 'PUT',
+          success: function(data) {
+            if(data.result == 'success') {
+              window.location.href = '/wechat/tasks/<%= @task.id %>/trash_successful';
+            } else {
+              toastr.error(data.message);
+            }
+          }
+        });
+      });
+    });
+  </script>
+<% end %>

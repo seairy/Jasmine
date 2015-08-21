@@ -1,0 +1,51 @@
+<div class="content">
+  <div class="form">
+    <h1>确认购买</h1>
+    <%= form_for @task, url: purchase_wechat_task_path(@task), method: :put, html: { id: 'purchase-form' } do |f| %>
+      <div class="form-line">
+        <label class="form-label">预估价格：</label>
+        <div class="form-content">
+          <%= @task.estimate_price.to_i %>元
+        </div>
+      </div>
+       <div class="form-line">
+        <label class="form-label">实际价格：</label>
+        <div class="form-content">
+          <%= f.text_field :actual_price, maxlength: 6, class: 'text-field text-field-price' %>
+        </div>
+      </div>
+      <%= link_to '返回', [:wechat, @task], class: 'btn btn-success' %>
+      <%= link_to '确认购买', 'javascript:;', class: 'btn btn-primary', id: 'purchase-btn' %>
+    <% end %>
+  </div>
+</div>
+<%= footer_tag %>
+<% content_for :javascript do %>
+  <script>
+    $(document).ready(function() {
+      $('#purchase-btn').on('click', function(e) {
+        e.preventDefault();
+        if($("#task_actual_price").val() == '') {
+          toastr.error('请填写实际价格');
+        } else if(!(new RegExp(/^\d{1,6}$/).test($('#task_actual_price').val()))) {
+          toastr.error('请填写实际价格');
+        } else if(parseInt($('#task_actual_price').val()) < 1 || parseInt($('#task_actual_price').val()) > <%= @task.estimate_price.to_i %>) {
+          toastr.error('实际价格不能高于预估价格');
+        } else {
+          $.ajax({
+            url: $('#purchase-form').attr('action'),
+            data: $('#purchase-form').serialize(),
+            method: 'PUT',
+            success: function(data) {
+              if(data.result == 'success') {
+                window.location.href = data.message;
+              } else {
+                toastr.error(data.message);
+              }
+            }
+          });
+        }
+      });
+    });
+  </script>
+<% end %>

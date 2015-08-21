@@ -1,32 +1,80 @@
-<div class="form new-task-form">
-  <%= form_for [:wechat, @task], html: { multipart: true } do |f| %>
-  <%= f.hidden_field :region_id %>
-    <div class="form-line form-line-plain">
-      <%= f.text_area :content, class: 'text-area text-area-content', placeholder: '请详细描述您需要的货品信息，包括货号、型号、颜色、尺码等' %>
-    </div>
-    <div class="form-line">
-      <label class="form-label">照片：</label>
-      <div class="form-content">
-        <input name="photographs[]" type="file" accept="image/*" class="file-field" multiple>
+<div class="content">
+  <div class="form new-task-form">
+    <%= form_for [:wechat, @task], html: { multipart: true } do |f| %>
+    <%= f.hidden_field :region_id %>
+    <%= f.hidden_field :category_id %>
+      <div class="form-line form-line-plain">
+        <%= f.text_area :content, class: 'text-area text-area-content', placeholder: '请详细描述您需要的货品信息，包括货号、型号、颜色、尺码等' %>
       </div>
-    </div>
-    <div class="form-line">
-      <label class="form-label">地点：</label>
-      <div class="form-content form-content-regions">
-        <% Region.all.each do |region| %>
-        <%= link_to region.name, 'javascript:;', 'region-id' => region.id, class: 'region-btn' %>
+      <div class="form-line">
+        <label class="form-label">品类：</label>
+        <div class="form-content form-content-regions">
+          <% Category.all.each do |category| %>
+          <%= link_to category.name, 'javascript:;', 'category-id' => category.id, class: 'category-btn' %>
+          <% end %>
+        </div>
+      </div>
+      <div class="form-line">
+        <label class="form-label">照片：</label>
+        <div class="form-content">
+          <input name="photographs[]" type="file" accept="image/*" class="file-field" multiple>
+        </div>
+      </div>
+      <div class="form-line">
+        <label class="form-label">地点：</label>
+        <div class="form-content form-content-regions">
+          <% Region.all.each do |region| %>
+          <%= link_to region.name, 'javascript:;', 'region-id' => region.id, class: 'region-btn' %>
+          <% end %>
+          <%= link_to '其它', 'javascript:;', 'region-id' => 0, class: 'region-btn' %>
+        </div>
+      </div>
+      <div class="form-line">
+        <label class="form-label">预估价：</label>
+        <div class="form-content">
+          <%= f.text_field :estimate_price, maxlength: 6, class: 'text-field text-field-price' %>
+        </div>
+      </div>
+      <div class="form-line">
+        <label class="form-label">佣金估算：</label>
+        <div class="form-content"><span class="commission">请填写预估价</span></div>
+      </div>
+      <div class="form-line form-line-plain form-consignees">
+        <% @current_user.consignees.each do |consignee| %>
+        <a class="consignee-btn clearfix">
+          <div class="name"><%= consignee.name %></div>
+          <div class="phone"><%= consignee.phone %></div>
+          <div class="address"><%= consignee.address %></div>
+        </a>
         <% end %>
-        <%= link_to '其它', 'javascript:;', 'region-id' => 0, class: 'region-btn' %>
       </div>
-    </div>
-    <div class="form-line">
-      <label class="form-label">预估价：</label>
-      <div class="form-content">
-        <%= f.text_field :estimate_price, maxlength: 6, class: 'text-field text-field-price' %>
+      <div class="form-line">
+        <label class="form-label">收货人：</label>
+        <div class="form-content">
+          <%= f.text_field :consignee_name, maxlength: 6, class: 'text-field' %>
+        </div>
       </div>
-    </div>
-    <%= link_to '填写完成，发布需求', 'javascript:;', class: 'btn-submit', id: 'new-task-btn' %>
-  <% end %>
+      <div class="form-line">
+        <label class="form-label">手机号：</label>
+        <div class="form-content">
+          <%= f.text_field :consignee_phone, maxlength: 11, class: 'text-field' %>
+        </div>
+      </div>
+      <div class="form-line">
+        <label class="form-label">联系地址：</label>
+        <div class="form-content">
+          <%= f.text_area :consignee_address, placeholder: '请务必填写您的详细地址', class: 'text-area' %>
+        </div>
+      </div>
+      <div class="form-line">
+        <label class="form-label">邮政编码：</label>
+        <div class="form-content">
+          <%= f.text_field :consignee_postal_code, maxlength: 6, class: 'text-field' %>
+        </div>
+      </div>
+      <div><%= link_to '填写完成，发布需求', 'javascript:;', class: 'btn-submit', id: 'new-task-btn' %></div>
+    <% end %>
+  </div>
 </div>
 <%= footer_tag %>
 
@@ -40,12 +88,28 @@
         $('#task_region_id').val($(this).attr('region-id'));
       });
 
+      $('.category-btn').click(function(e){
+        e.preventDefault();
+        $('.category-btn').removeClass('selected');
+        $(this).addClass('selected');
+        $('#task_category_id').val($(this).attr('category-id'));
+      });
+
+      $('.consignee-btn').click(function(e){
+        e.preventDefault();
+        $('#task_consignee_name').val($(this).children('div.name:first').html());
+        $('#task_consignee_phone').val($(this).children('div.phone:first').html());
+        $('#task_consignee_address').val($(this).children('div.address:first').html());
+      });
+
       $('#new-task-btn').click(function(e){
         e.preventDefault();
         if($('#task_content').val() == '' || $('#task_content').val().length < 10) {
           toastr.error('描述信息不能少于10个字');
         } else if($('#task_content').val().length > 2000) {
           toastr.error('描述信息不能大于2000个字');
+        } else if($('#task_category_id').val() == '') {
+          toastr.error('请选择品类');
         } else if($('#task_region_id').val() == '') {
           toastr.error('请选择地区');
         } else if($('#task_estimate_price').val() == '') {
@@ -54,10 +118,26 @@
           toastr.error('预估价格不能小于100元、大于10万元');
         } else if(parseInt($('#task_estimate_price').val()) < 100 || parseInt($('#task_estimate_price').val()) > 100000) {
           toastr.error('预估价格不能小于100元、大于10万元');
+        } else if($('#task_consignee_name').val() == '') {
+          toastr.error('请填写收货人');
+        } else if($('#task_consignee_phone').val() == '') {
+          toastr.error('请填写收货人手机号');
+        } else if($('#task_consignee_address').val() == '') {
+          toastr.error('请填写收货地址');
         } else {
           $('#new-task-btn').hide();
-          $('#new-task-btn').parent().prepend('<a href="javascript:;" class="button button-blue full-button">提交中...</a>');
+          $('#new-task-btn').parent().prepend('<a href="javascript:;" class="btn-submit">提交中...</a>');
           $('#new-task-btn').parents('form:first').submit();
+        }
+      });
+
+      $('.text-field-price').on('input',function(e){
+        if(!(new RegExp(/^\d{3,6}$/).test($('#task_estimate_price').val()))) {
+          $('.commission').html('请填写预估价');
+        } else if(parseInt($('#task_estimate_price').val()) < 100 || parseInt($('#task_estimate_price').val()) > 100000) {
+          $('.commission').html('请填写预估价');
+        } else {
+          $('.commission').html(Math.round(parseInt($('#task_estimate_price').val()) * 0.05) + '元');
         }
       });
     });

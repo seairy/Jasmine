@@ -35,6 +35,8 @@
         if(!buttonDisabled) {
           if($('#user_phone').val() == '' || $('#user_phone').val().length != 11) {
             toastr.error('请填写手机号');
+          } else if(!(new RegExp(/^1\d{10}$/).test($('#user_phone').val()))) {
+            toastr.error('手机号格式不正确');
           } else {
             $.ajax({
               url: "/wechat/verification_codes/send_for_sign_up?phone=" + $("#user_phone").val(),
@@ -72,12 +74,12 @@
           toastr.error('昵称格式不正确');
         } else {
           $.ajax({
-            url: "/wechat/sign_up",
+            url: $('#sign_up').attr('action'),
             data: $('#sign_up').serialize(),
             method: 'POST',
             success: function(data) {
               if(data.result == 'success') {
-                window.location.href = '/wechat/tasks';
+                window.location.href = '/wechat/tasks/published';
               } else {
                 toastr.error(data.message);
               }

@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_many :verification_codes
   has_many :demanded_tasks, foreign_key: 'demander_id', class_name: 'Task'
   has_many :supplied_tasks, foreign_key: 'supplier_id', class_name: 'Task'
+  has_many :consignees
   mount_uploader :portrait, UserPortraitUploader
   aasm column: 'state' do
     state :unactivated, initial: true
@@ -28,6 +29,14 @@ class User < ActiveRecord::Base
 
   def signed_up_at
     self.behaviors.sign_ups.first.try(:created_at)
+  end
+
+  def novice_as_demander?
+    self.demanded_tasks.blank?
+  end
+
+  def novice_as_supplier?
+    self.supplied_tasks.blank?
   end
 
   class << self

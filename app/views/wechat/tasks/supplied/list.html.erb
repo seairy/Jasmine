@@ -1,13 +1,13 @@
 <div class="content">
-  <div class="task-list">
-    <%= render partial: 'tasks', locals: { tasks: @tasks } %>
+  <div class="supplied-task-list">
+    <%= render partial: 'wechat/tasks/supplied/tasks', locals: { tasks: @tasks } %>
   </div>
 </div>
 <%= footer_tag %>
 <% content_for :javascript do %>
   <script>
     $(document).ready(function() {
-      $('.task-list').jscroll({
+      $('.supplied-task-list').jscroll({
         callback: function() {
           FastClick.attach(document.body);
           $("img.lazy").lazyload();

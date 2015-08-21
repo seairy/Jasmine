@@ -1,0 +1,31 @@
+<div class="content">
+  <div class="panel panel-notice">
+    <h1>确认接单</h1>
+    <p>1. 您购买的价格不得高于预估价</p>
+    <p>2. 从即刻算起，直到将商品发出快递，整个周期不得超过20天</p>
+    <p>3. 商品的快递费用由您承担</p>
+    <%= link_to '返回', [:wechat, @task], class: 'btn btn-success' %>
+    <%= link_to '确认接单', accept_wechat_task_path(@task), class: 'btn btn-primary', id: 'accept-btn' %>
+  </div>
+</div>
+<%= footer_tag %>
+<% content_for :javascript do %>
+  <script>
+    $(document).ready(function() {
+      $('#accept-btn').on('click', function(e) {
+        e.preventDefault();
+        $.ajax({
+          url: this.href,
+          method: 'PUT',
+          success: function(data) {
+            if(data.result == 'success') {
+              window.location.href = '/wechat/tasks/<%= @task.id %>/accept_successful';
+            } else {
+              toastr.error(data.message);
+            }
+          }
+        });
+      });
+    });
+  </script>
+<% end %>

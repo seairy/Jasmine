@@ -1,0 +1,29 @@
+<div class="content">
+  <div class="panel panel-notice">
+    <h1>确认支付尾款</h1>
+    <p>支付尾款后，信鸽即将为您发货</p>
+    <%= link_to '返回', [:wechat, @task], class: 'btn btn-success' %>
+    <%= link_to '确认支付', clear_wechat_task_path(@task), class: 'btn btn-danger', id: 'clear-btn' %>
+  </div>
+</div>
+<%= footer_tag %>
+<% content_for :javascript do %>
+  <script>
+    $(document).ready(function() {
+      $('#clear-btn').on('click', function(e) {
+        e.preventDefault();
+        $.ajax({
+          url: this.href,
+          method: 'PUT',
+          success: function(data) {
+            if(data.result == 'success') {
+              window.location.href = '/wechat/tasks/<%= @task.id %>/clear_successful';
+            } else {
+              toastr.error(data.message);
+            }
+          }
+        });
+      });
+    });
+  </script>
+<% end %>

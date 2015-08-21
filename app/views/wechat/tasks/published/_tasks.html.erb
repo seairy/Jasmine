@@ -1,0 +1,32 @@
+<% @tasks.each do |task| %>
+<div class="panel panel-task-list">
+  <a href="<%= url_for([:wechat, task]) %>">
+    <div class="user">
+      <div class="portrait"><%= image_tag 'wechat/blank.png', class: 'lazy', data: { original: (task.demander.portrait.w100_h100_fl_q60.url || asset_path('wechat/non-portrait.jpg')) } %></div>
+      <div class="nickname"><%= task.demander.nickname %></div>
+    </div>
+    <div class="commission"><span>佣金</span><%= task.commission.to_i %>元</div>
+    <div class="clearfix"></div>
+    <div class="published-at"><%= time_ago_in_words task.created_at %>前发布</div>
+    <div class="region">
+      <% if task.region %>
+      <%= task.region.name %>购买
+      <% else %>
+      无地点限制
+      <% end %>
+    </div>
+    <div class="clearfix"></div>
+    <div class="task-content"><%= task.content %></div>
+    <% if task.photographs.any? %>
+    <div class="photographs clearfix">
+      <% task.photographs.limit(3).each do |photograph| %>
+      <%= image_tag 'wechat/blank.png', class: 'lazy', data: { original: photograph.file.w80_h80_fl_q60.url } %>
+      <% end %>
+    </div>
+    <% end %>
+  </a>
+</div>
+<% end %>
+<%= link_to_next_page @tasks, '下一页' do %>
+<a class="no-more-results">没有更多了</a>
+<% end %>

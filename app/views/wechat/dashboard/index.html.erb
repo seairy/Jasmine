@@ -6,10 +6,12 @@
       <div class="signed-up-at"><%= @current_user.signed_up_at.strftime('%Y-%m-%d') %> 加入</div>
     </a>
     <ul class="menu">
-      <li><%= link_to '我发布的订单' %><i class="fa fa-angle-right"></i></li>
-      <li><%= link_to '我承接的订单' %><i class="fa fa-angle-right"></i></li>
+      <li><%= link_to '我的钱包', wechat_account_path %><i class="fa fa-angle-right"></i></li>
+      <li><%= link_to '我发布的订单', demanded_wechat_tasks_path %><i class="fa fa-angle-right"></i></li>
+      <li><%= link_to '我承接的订单', supplied_wechat_tasks_path %><i class="fa fa-angle-right"></i></li>
+      <li><%= link_to '收货人管理', wechat_consignees_path %><i class="fa fa-angle-right"></i></li>
+      <li><%= link_to '新手帮助' %><i class="fa fa-angle-right"></i></li>
       <li><%= link_to '关于我们' %><i class="fa fa-angle-right"></i></li>
-      <li><%= link_to '用户协议' %><i class="fa fa-angle-right"></i></li>
     </ul>
   </div>
 </div>

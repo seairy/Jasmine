@@ -1,0 +1,65 @@
+<div class="content">
+  <div class="form">
+    <h1>创建新收货人</h1>
+    <%= form_for [:wechat, @consignee] do |f| %>
+      <div class="form-line">
+        <label class="form-label"><span class="require">*</span>收货人：</label>
+        <div class="form-content">
+          <%= f.text_field :name, maxlength: 10, class: 'text-field' %>
+        </div>
+      </div>
+      <div class="form-line">
+        <label class="form-label"><span class="require">*</span>手机号：</label>
+        <div class="form-content">
+          <%= f.text_field :phone, maxlength: 11, class: 'text-field' %>
+        </div>
+      </div>
+      <div class="form-line">
+        <label class="form-label"><span class="require">*</span>联系地址：</label>
+        <div class="form-content">
+          <%= f.text_area :address, placeholder: '请务必填写您的详细地址', class: 'text-area' %>
+        </div>
+      </div>
+      <div class="form-line">
+        <label class="form-label">邮政编码：</label>
+        <div class="form-content">
+          <%= f.text_field :postal_code, maxlength: 6, class: 'text-field' %>
+        </div>
+      </div>
+      <div><%= link_to '填写完成', 'javascript:;', class: 'btn-submit', id: 'new-consignee-btn' %></div>
+    <% end %>
+  </div>
+</div>
+<%= footer_tag %>
+<% content_for :javascript do %>
+  <script>
+    $(document).ready(function() {
+      $('#new-consignee-btn').click(function(e){
+        e.preventDefault();
+        if($('#consignee_name').val() == '') {
+          toastr.error('请填写收货人');
+        } else if($('#consignee_name').val().length < 2) {
+          toastr.error('收货人不能少于2个字');
+        } else if($('#consignee_name').val().length > 10) {
+          toastr.error('收货人不能大于10个字');
+        } else if($('#consignee_phone').val() == '') {
+          toastr.error('请填写手机号');
+        } else if(!(new RegExp(/^1\d{10}$/).test($('#consignee_phone').val()))) {
+          toastr.error('手机号格式不正确');
+        } else if($('#consignee_address').val() == '') {
+          toastr.error('请填写联系地址');
+        } else if($('#consignee_address').val().length < 8) {
+          toastr.error('联系地址不能少于8个字');
+        } else if($('#consignee_address').val().length > 400) {
+          toastr.error('联系地址不能大于400个字');
+        } else if($('#consignee_postal_code').val() != '' && $('#consignee_postal_code').val().length != 6) {
+          toastr.error('邮政编码只能为6个字');
+        } else {
+          $('#new-consignee-btn').hide();
+          $('#new-consignee-btn').parent().prepend('<a href="javascript:;" class="btn-submit">提交中...</a>');
+          $('#new-consignee-btn').parents('form:first').submit();
+        }
+      });
+    });
+  </script>
+<% end %>

@@ -1,0 +1,18 @@
+<div class="content">
+  <div class="task-list">
+    <%= render partial: 'wechat/tasks/published/tasks', locals: { tasks: @tasks } %>
+  </div>
+</div>
+<%= footer_tag %>
+<% content_for :javascript do %>
+  <script>
+    $(document).ready(function() {
+      $('.task-list').jscroll({
+        callback: function() {
+          FastClick.attach(document.body);
+          $("img.lazy").lazyload();
+        }
+      });
+    });
+  </script>
+<% end %>

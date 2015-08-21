@@ -203,3 +203,17 @@ zh-CN:
       long: "%Y年%b%d日 %H:%M"
       short: "%b%d日 %H:%M"
     pm: 下午
+  activerecord:
+    errors:
+      messages:
+        record_invalid: ! '验证失败: %{errors}'
+    attributes:
+      task:
+        state/pending: 等待支付定金
+        state/publishing: 等待接单
+        state/shopping: 购物中
+        state/clearing: 等待支付尾款
+        state/delivering: 等待收货
+        state/finished: 已完成
+        state/cancelled: 已取消
+        state/trashed: 已删除

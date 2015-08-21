@@ -18,8 +18,7 @@ class Wechat::BaseController < ApplicationController
     end
   end
 
-  def dashboard
-
+  def error
   end
 
   protected
@@ -33,5 +32,13 @@ class Wechat::BaseController < ApplicationController
 
     def sign_up
       redirect_to wechat_sign_up_form_path if @current_user.unactivated?
+    end
+
+    def set_before_path
+      session['before_path'] = request.path
+    end
+
+    def set_consignee
+      redirect_to new_wechat_consignee_path if @current_user.consignees.blank?
     end
 end

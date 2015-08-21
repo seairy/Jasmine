@@ -1,0 +1,38 @@
+<div class="content">
+  <div class="panel panel-notice">
+    <h1>确认取消</h1>
+    <%= form_for @task, url: cancel_wechat_task_path(@task), method: :put, html: { id: 'cancellation-form' } do |f| %>
+    <p><%= f.radio_button :reason_of_cancellation, :out_of_stock %> 商品缺货</p>
+    <p><%= f.radio_button :reason_of_cancellation, :reroute %> 行程改变</p>
+    <p><%= f.radio_button :reason_of_cancellation, :subjective_issue %> 接错订单</p>
+    <% end %>
+    <%= link_to '返回', [:wechat, @task], class: 'btn btn-success' %>
+    <%= link_to '确认取消', 'javascript:;', class: 'btn btn-danger', id: 'cancel-btn' %>
+  </div>
+</div>
+<%= footer_tag %>
+<% content_for :javascript do %>
+  <script>
+    $(document).ready(function() {
+      $('#cancel-btn').on('click', function(e) {
+        e.preventDefault();
+        if($("input:radio[name='task[reason_of_cancellation]']:checked").val() == undefined) {
+          toastr.error('请选择取消原因');
+        } else {
+          $.ajax({
+            url: $('#cancellation-form').attr('action'),
+            data: $('#cancellation-form').serialize(),
+            method: 'PUT',
+            success: function(data) {
+              if(data.result == 'success') {
+                window.location.href = '/wechat/tasks/<%= @task.id %>';
+              } else {
+                toastr.error(data.message);
+              }
+            }
+          });
+        }
+      });
+    });
+  </script>
+<% end %>

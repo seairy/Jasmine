@@ -25,8 +25,6 @@ class VerificationCode < ActiveRecord::Base
     end
 
     def validate_sign_up options = {}
-      puts "******* 1: #{options[:user].verification_codes.type_sign_ups.order(created_at: :desc).first.try(:phone)}"
-      puts "******* 2: #{options[:phone]}"
       raise InvalidPhone.new unless options[:user].verification_codes.type_sign_ups.order(created_at: :desc).first.try(:phone) == options[:phone]
       # raise IncorrectVerificationCode.new unless options[:user].verification_codes.type_sign_ups.order(created_at: :desc).first.try(:content) == options[:verification_code]
       raise IncorrectVerificationCode.new unless options[:verification_code] == '8888'

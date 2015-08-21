@@ -5,7 +5,12 @@ class CreateTasks < ActiveRecord::Migration
       t.references :demander, null: false
       t.references :supplier
       t.string :content, limit: 8000, null: false
+      t.references :category
       t.references :region
+      t.string :consignee_name, limit: 50, null: false
+      t.string :consignee_phone, limit: 20, null: false
+      t.string :consignee_address, limit: 1200, null: false
+      t.string :consignee_postal_code, limit: 10
       t.decimal :estimate_price, precision: 8, scale: 2
       t.decimal :actual_price, precision: 8, scale: 2
       t.decimal :deposit, precision: 8, scale: 2
@@ -13,6 +18,14 @@ class CreateTasks < ActiveRecord::Migration
       t.decimal :balance, precision: 8, scale: 2
       t.decimal :commission, precision: 8, scale: 2
       t.boolean :final_paid, null: false
+      t.datetime :published_at
+      t.datetime :accepted_at
+      t.datetime :purchased_at
+      t.datetime :cleared_at
+      t.datetime :finished_at
+      t.datetime :cancelled_at
+      t.datetime :trashed_at
+      t.string :reason_of_cancellation_cd, limit: 20
       t.string :state, limit: 20, null: false
       t.timestamps null: false
     end

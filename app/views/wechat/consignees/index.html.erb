@@ -1,0 +1,17 @@
+<div class="content">
+  <div class="panel">
+    <h1>收货人列表</h1>
+  </div>
+  <% @current_user.consignees.each do |consignee| %>
+  <div class="panel">
+    <p><span>收货人：</span><%= consignee.name %></p>
+    <p><span>手机号：</span><%= consignee.phone %></p>
+    <p><span>联系地址：</span><%= consignee.address %></p>
+    <p><span>邮政编码：</span><%= consignee.postal_code %></p>
+  </div>
+  <% end %>
+  <div class="panel">
+    <%= link_to '添加收货人', new_wechat_consignee_path, class: 'btn btn-primary' %>
+  </div>
+</div>
+<%= footer_tag %>
