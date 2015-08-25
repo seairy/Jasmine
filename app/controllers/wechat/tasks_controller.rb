@@ -26,7 +26,7 @@ class Wechat::TasksController < Wechat::BaseController
     begin
       @task = @current_user.demanded_tasks.create_with_photographs!(task_params, params[:photographs])
       render 'create_successful'
-    rescue StandardError => e
+    rescue
       redirect_to new_wechat_task_path, alert: '需求信息有误，请重试'
     end
   end
