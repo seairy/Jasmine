@@ -8,7 +8,7 @@ class Wechat::Menu < Wechat::Base
             {  
               "type" => "view",
               "name" => "小信鸽",
-              "url" => "http://development.luggagep.com/wechat/tasks"
+              "url" => "http://development.luggagep.com/wechat/tasks/published"
             }]
           },
           {  
