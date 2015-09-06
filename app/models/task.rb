@@ -40,8 +40,11 @@ class Task < ActiveRecord::Base
     end
   end
   validates :content, presence: true, length: { in: 10..2000 }
-  validates :estimate_price, numericality: { greater_than_or_equal_to: 100, less_than_or_equal_to: 100000 }
-  validates :actual_price, numericality: { less_than_or_equal_to: 100000 }, if: 'actual_price'
+  validates :quantity, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 99 }
+  validates :estimate_unit_price, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 100000 }
+  validates :estimate_total_price, numericality: { greater_than_or_equal_to: 100, less_than_or_equal_to: 100000 }, if: 'actual_total_price'
+  validates :actual_unit_price, numericality: { less_than_or_equal_to: 100000 }, if: 'actual_unit_price'
+  validates :actual_total_price, numericality: { less_than_or_equal_to: 100000 }, if: 'actual_total_price'
   validates :deposit, numericality: true, if: 'deposit'
   validates :balance, numericality: true, if: 'balance'
   validates :commission, numericality: true, if: 'commission'
@@ -126,9 +129,10 @@ class Task < ActiveRecord::Base
 
   protected
     def set_default_values
-      self.deposit = (self.estimate_price.to_f * 0.7).round
+      self.estimate_total_price = self.estimate_unit_price * self.quantity
+      self.deposit = (self.estimate_total_price.to_f * Preference.deposit_ratio).round
       self.deposit_paid = false
       self.final_paid = false
-      self.commission = (self.estimate_price.to_f * Preference.commission_rate).round
+      self.commission = (self.estimate_total_price.to_f * Preference.commission_rate).round
     end
 end

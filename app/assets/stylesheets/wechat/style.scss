@@ -223,38 +223,51 @@ color:#f15a24;
 }
 
 .new-task-form {
-  .form-consignees {
-    .consignee-btn {
-      display: block;
-      margin-bottom: 10px;
-      padding: 4px 0;
-      border: 1px #888 dashed;
-      background-color: #ddd;
-      .name {
-        float: left;
-        width: 100px;
-        height: 20px;
-        line-height: 20px;
-      }
-      .phone {
-        float: right;
-        width: 100px;
-        height: 20px;
-        line-height: 20px;
-      }
-      .address {
-        float: left;
-        margin-top: 4px;
-        height: 20px;
-        line-height: 20px;
-        word-wrap: break-word;
-        letter-spacing: 0;
-        line-height: 20px;
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-      }
+  .quantity-minus {
+    display: block;
+    float: right;
+    padding: 4px;
+    border: 1px #333 solid;
+    height: 12px;
+    width: 12px;
+    line-height: 12px;
+    font-size: 18px;
+    text-align: center;
+  }
+  .quantity {
+    display: block;
+    float: right;
+    margin: 0 10px;
+    width: 20px;
+    line-height: 22px;
+    text-align: center;
+  }
+  .quantity-plus {
+    display: block;
+    float: right;
+    padding: 4px;
+    border: 1px #333 solid;
+    height: 12px;
+    width: 12px;
+    line-height: 12px;
+    font-size: 18px;
+    text-align: center;
+  }
+}
+
+.new-task-form {
+  .consignee-btn {
+    display: block;
+    border: 1px #ccc solid;
+    background-color: #bbb;
+    div {
+      height: 20px;
+      line-height: 20px;
+      overflow: hidden;
+      letter-spacing: 0;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
     }
   }
 }

@@ -9,8 +9,10 @@
     <div class="row category"><label>品类：</label><%= @task.category.name %></div>
     <div class="row published-at"><label>发布于：</label><%= @task.created_at.strftime('%Y-%m-%d %H:%M') %></div>
     <div class="row region"><label>希望在：</label><%= @task.region ? @task.region.name : '任何地方' %>购买</div>
-    <div class="row estimate-price"><label>预估价：</label><span class="price"><%= @task.estimate_price %>元</span></div>
-    <div class="row commission"><label>佣金：</label><span class="price"><%= @task.commission %>元</span></div>
+    <div class="row estimate-price"><label>预估单价：</label><span class="price"><%= @task.estimate_unit_price %>元</span></div>
+    <div class="row estimate-price"><label>数量：</label><span class="quantity"><%= @task.quantity %></span></div>
+    <div class="row estimate-price"><label>预估总价：</label><span class="price"><%= @task.estimate_total_price %>元</span></div>
+    <div class="row commission"><label>预估佣金：</label><span class="price"><%= @task.commission %>元</span></div>
     <% if @task.photographs.any? %>
     <div class="photographs clearfix">
       <% @task.photographs.each do |photograph| %>

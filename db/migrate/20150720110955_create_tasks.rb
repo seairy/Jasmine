@@ -11,8 +11,11 @@ class CreateTasks < ActiveRecord::Migration
       t.string :consignee_phone, limit: 20, null: false
       t.string :consignee_address, limit: 1200, null: false
       t.string :consignee_postal_code, limit: 10
-      t.decimal :estimate_price, precision: 8, scale: 2
-      t.decimal :actual_price, precision: 8, scale: 2
+      t.integer :quantity, limit: 1, null: false
+      t.decimal :estimate_unit_price, precision: 8, scale: 2
+      t.decimal :estimate_total_price, precision: 8, scale: 2
+      t.decimal :actual_unit_price, precision: 8, scale: 2
+      t.decimal :actual_total_price, precision: 8, scale: 2
       t.decimal :deposit, precision: 8, scale: 2
       t.boolean :deposit_paid, null: false
       t.decimal :balance, precision: 8, scale: 2

@@ -3,6 +3,7 @@
     <%= form_for [:wechat, @task], html: { multipart: true } do |f| %>
     <%= f.hidden_field :region_id %>
     <%= f.hidden_field :category_id %>
+    <%= f.hidden_field :quantity %>
       <div class="form-line form-line-plain">
         <%= f.text_area :content, class: 'text-area text-area-content', placeholder: '请详细描述您需要的货品信息，包括货号、型号、颜色、尺码等' %>
       </div>
@@ -30,14 +31,31 @@
         </div>
       </div>
       <div class="form-line">
-        <label class="form-label">预估价：</label>
+        <label class="form-label">预估单价：</label>
         <div class="form-content">
-          <%= f.text_field :estimate_price, maxlength: 6, class: 'text-field text-field-price' %>
+          <%= f.text_field :estimate_unit_price, maxlength: 6, class: 'text-field text-field-price' %>
         </div>
       </div>
       <div class="form-line">
+        <label class="form-label">数量：</label>
+        <div class="form-content">
+          <a href="javascript:;" class="quantity-minus">-</a>
+          <span class="quantity">1</span>
+          <a href="javascript:;" class="quantity-plus">+</a>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div class="form-line">
+        <label class="form-label">预估总价：</label>
+        <div class="form-content"><span class="estimate_total_price">-</span></div>
+      </div>
+      <div class="form-line">
+        <label class="form-label">定金估算：</label>
+        <div class="form-content"><span class="deposit">-</span></div>
+      </div>
+      <div class="form-line">
         <label class="form-label">佣金估算：</label>
-        <div class="form-content"><span class="commission">请填写预估价</span></div>
+        <div class="form-content"><span class="commission">-</span></div>
       </div>
       <div class="form-line form-line-plain form-consignees">
         <% @current_user.consignees.each do |consignee| %>
@@ -81,6 +99,22 @@
 <% content_for :javascript do %>
   <script>
     $(document).ready(function() {
+      function calcTotalAndCommission() {
+        if(!(new RegExp(/^\d{1,6}$/).test($('#task_estimate_unit_price').val()))) {
+          $('.estimate_total_price').html('-');
+          $('.deposit').html('-');
+          $('.commission').html('-');
+        } else if(parseInt($('#task_estimate_unit_price').val()) < 1 || parseInt($('#task_estimate_unit_price').val()) > 100000) {
+          $('.estimate_total_price').html('-');
+          $('.deposit').html('-');
+          $('.commission').html('-');
+        } else {
+          $('.estimate_total_price').html(Math.round(parseInt($('#task_estimate_unit_price').val()) * parseInt($('.quantity').html())) + '元');
+          $('.deposit').html(Math.round(parseInt($('#task_estimate_unit_price').val()) * parseInt($('.quantity').html()) * <%= Preference.deposit_ratio %>) + '元');
+          $('.commission').html(Math.round(parseInt($('#task_estimate_unit_price').val()) * parseInt($('.quantity').html()) * <%= Preference.commission_rate %>) + '元');
+        }
+      }
+
       $('.region-btn').click(function(e){
         e.preventDefault();
         $('.region-btn').removeClass('selected');
@@ -104,6 +138,8 @@
 
       $('#new-task-btn').click(function(e){
         e.preventDefault();
+        $('#task_quantity').val(parseInt($('.quantity').html()));
+        var estimate_total_price = parseInt($('#task_estimate_unit_price').val()) * parseInt($('#task_quantity').val());
         if($('#task_content').val() == '' || $('#task_content').val().length < 10) {
           toastr.error('描述信息不能少于10个字');
         } else if($('#task_content').val().length > 2000) {
@@ -112,12 +148,22 @@
           toastr.error('请选择品类');
         } else if($('#task_region_id').val() == '') {
           toastr.error('请选择地区');
-        } else if($('#task_estimate_price').val() == '') {
-          toastr.error('请填写预估价格');
-        } else if(!(new RegExp(/^\d{3,6}$/).test($('#task_estimate_price').val()))) {
-          toastr.error('预估价格不能小于100元、大于10万元');
-        } else if(parseInt($('#task_estimate_price').val()) < 100 || parseInt($('#task_estimate_price').val()) > 100000) {
-          toastr.error('预估价格不能小于100元、大于10万元');
+        } else if($('#task_estimate_unit_price').val() == '') {
+          toastr.error('请填写预估单价');
+        } else if(!(new RegExp(/^\d{1,6}$/).test($('#task_estimate_unit_price').val()))) {
+          toastr.error('预估单价不能小于1元、大于10万元');
+        } else if(parseInt($('#task_estimate_unit_price').val()) < 1 || parseInt($('#task_estimate_unit_price').val()) > 100000) {
+          toastr.error('预估单价不能小于1元、大于10万元');
+        } else if($('#task_quantity').val() == '') {
+          toastr.error('请选择数量');
+        } else if(!(new RegExp(/^\d{1,2}$/).test($('#task_quantity').val()))) {
+          toastr.error('数量不能小于1件、大于99件');
+        } else if(parseInt($('#task_quantity').val()) < 1 || parseInt($('#task_quantity').val()) > 99) {
+          toastr.error('数量不能小于1件、大于99件');
+        } else if(!(new RegExp(/^\d{3,6}$/).test(estimate_total_price))) {
+          toastr.error('预估总价不能小于100元、大于10万元');
+        } else if(estimate_total_price < 1 || estimate_total_price > 100000) {
+          toastr.error('预估总价不能小于100元、大于10万元');
         } else if($('#task_consignee_name').val() == '') {
           toastr.error('请填写收货人');
         } else if($('#task_consignee_phone').val() == '') {
@@ -132,13 +178,21 @@
       });
 
       $('.text-field-price').on('input',function(e){
-        if(!(new RegExp(/^\d{3,6}$/).test($('#task_estimate_price').val()))) {
-          $('.commission').html('请填写预估价');
-        } else if(parseInt($('#task_estimate_price').val()) < 100 || parseInt($('#task_estimate_price').val()) > 100000) {
-          $('.commission').html('请填写预估价');
-        } else {
-          $('.commission').html(Math.round(parseInt($('#task_estimate_price').val()) * 0.05) + '元');
+        calcTotalAndCommission();
+      });
+
+      $('.quantity-plus').click(function(e){
+        if (parseInt($('.quantity').html()) < 99) {
+          $('.quantity').html(parseInt($('.quantity').html()) + 1);
         }
+        calcTotalAndCommission();
+      });
+
+      $('.quantity-minus').click(function(e){
+        if (parseInt($('.quantity').html()) > 1) {
+          $('.quantity').html(parseInt($('.quantity').html()) - 1);
+        }
+        calcTotalAndCommission();
       });
     });
   </script>

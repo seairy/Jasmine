@@ -20,5 +20,6 @@ Region.create!([
   { name: '丹麦' }
 ]) if Region.all.blank?
 Preference.create!([
-  { name: 'commission_rate', value: '0.05'}
+  { name: 'commission_rate', value: '0.05'},
+  { name: 'deposit_ratio', value: '0.7'}
 ])

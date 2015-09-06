@@ -212,7 +212,7 @@ class Wechat::TasksController < Wechat::BaseController
   def purchase
     begin
       @task = Task.find(params[:id])
-      raise InvalidActualPrice.new if params[:task][:actual_price].to_i > @task.estimate_price.to_i
+      raise InvalidActualPrice.new if params[:task][:actual_price].to_i > @task.estimate_unit_price.to_i
       @task.purchase_by(@current_user, params[:task][:actual_price].to_i)
       render json: AjaxMessenger.new(purchase_successful_wechat_task_path(@task))
     rescue InvalidState
